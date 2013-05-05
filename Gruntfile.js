@@ -7,6 +7,5 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   // Default task.
-  grunt.registerTask('default', ['jshint', 'jasmine']);
 
 };
