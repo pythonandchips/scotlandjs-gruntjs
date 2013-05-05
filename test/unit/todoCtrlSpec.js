@@ -14,7 +14,7 @@
 		}));
 
 		it('should not have an edited Todo on start', function () {
-			expect(scope.editedTodo).toBeNull();
+			expect(scope.editedTodo).not.toBeNull();
 		});
 
 		it('should not have any Todos on start', function () {
