@@ -1,5 +1,4 @@
 /*global todomvc */
-'use strict';
 
 /**
  * The main controller for the app. The controller:
