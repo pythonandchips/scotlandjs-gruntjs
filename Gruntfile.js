@@ -133,16 +133,11 @@ module.exports = function(grunt) {
   grunt.registerTask('reload', ['livereload-start', 'connect', 'regarde:livereload']);
   grunt.registerTask('staging', ['jshint', 'jasmine', 's3:staging']);
   grunt.registerTask('production', ['clean', 'concat', 'uglify', 'htmlbuild', 's3:prod']);
-  // These plugins provide necessary tasks.
-  // Default task.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-livereload');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-html-build');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-s3');
-  grunt.loadNpmTasks('grunt-regarde');
+
+  var pkg = grunt.file.readJSON('package.json');
+  for(var dep in pkg.devDependencies) {
+    if(dep.indexOf('grunt-') === 0) {
+      grunt.loadNpmTasks(dep);
+    }
+  }
 };
