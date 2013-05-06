@@ -23,6 +23,37 @@ module.exports = function(grunt) {
         specs : 'test/unit/**/*.js'
       }
     },
+    htmlbuild: {
+      dist: {
+        src: 'index.html',
+        dest: 'dist',
+        options: {
+          scripts: {
+            main: 'dist/all.min.js'
+          },
+          styles: {
+            main: 'dist/all.min.css'
+          }
+        }
+      }
+    },
+    concat: {
+      dist_js: {
+        src : [bowerPath + '/angular/*.js', bowerPath + '/angular-mocks/*.js', bowerPath + '/todomvc-common/*.js', sourcePath],
+        dest: 'dist/all.min.js'
+      },
+      dist_css: {
+        src : [bowerPath + '/todomvc-common/*.css'],
+        dest: 'dist/all.min.css'
+      }
+    },
+    uglify: {
+      dist: {
+        files: {
+          'dist/all.min.js': ['dist/all.min.js']
+        }
+      }
+    },
     connect: {
       livereload: {
         options: {
@@ -55,34 +86,45 @@ module.exports = function(grunt) {
         upload: [
           {
             src: bowerPath + '/angular/*',
-            dest: '/bower_components/angular',
+            dest: '/bower_components/angular'
           },
           {
             src: bowerPath + '/todomvc-common/*',
-            dest: '/bower_components/todomvc-common',
+            dest: '/bower_components/todomvc-common'
           },
           {
             src: 'js/controllers/*.js',
-            dest: '/js/controllers',
+            dest: '/js/controllers'
           },
           {
             src: 'js/directives/*.js',
-            dest: '/js/directives',
+            dest: '/js/directives'
           },
           {
             src: 'js/services/*.js',
-            dest: '/js/services',
+            dest: '/js/services'
           },
           {
             src: 'js/app.js',
-            dest: '/js/app.js',
+            dest: '/js/app.js'
           },
           {
             src: 'index.html',
-            dest: '/index.html',
+            dest: '/index.html'
+          }
+        ]
+      },
+      prod: {
+        upload: [
+          {
+            src: 'dist/*',
+            dest: '/prod/'
           }
         ]
       }
+    },
+    clean: {
+      release: ['dist/*']
     }
   });
 
@@ -90,12 +132,17 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint', 'jasmine']);
   grunt.registerTask('reload', ['livereload-start', 'connect', 'regarde:livereload']);
   grunt.registerTask('staging', ['jshint', 'jasmine', 's3:staging']);
+  grunt.registerTask('production', ['clean', 'concat', 'uglify', 'htmlbuild', 's3:prod']);
   // These plugins provide necessary tasks.
   // Default task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-livereload');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-html-build');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-s3');
   grunt.loadNpmTasks('grunt-regarde');
 };
