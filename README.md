@@ -8,7 +8,7 @@ If you want to walk through the commits as in the presentation follow these step
 
 - Install git-presenter from rubygems, gem install git-presenter
 - create a file called .presentation and paste the following code
-```
+```yaml
 ---
 slides:
 - slide:
